@@ -74,7 +74,7 @@ module.exports = function(context) {
   if (!files) {
     utils.handleError("No directory found", defer);
   }
-
+   console.log("Files: " + files);
   var gtmFile = files.filter(x => path.basename(x).startsWith(platformConfig.gtmFileNamePrefix) && path.basename(x).endsWith(platformConfig.gtmFileNameSuffix))[0];
 
   if (!gtmFile) {
