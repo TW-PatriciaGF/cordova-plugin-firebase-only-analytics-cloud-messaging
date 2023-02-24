@@ -31,6 +31,8 @@ module.exports = function(context) {
   var googleServicesZipFile = utils.getZipFile(sourceFolderPath, constants.googleServices);
   if (!googleServicesZipFile) {
     utils.handleError("No zip file found containing google services configuration file", defer);
+  } else {
+    console.log("Found: " + googleServicesZipFile);
   }
 
   var zip = new AdmZip(googleServicesZipFile);
@@ -43,11 +45,15 @@ module.exports = function(context) {
     utils.handleError("No directory found", defer);
   }
 
+  // Copy google-services.json or GoogleService-Info.plist
   var fileName = files.find(function (name) {
-    return name.endsWith(platformConfig.firebaseFileExtension);
+    return name.endsWith(platformConfig.firebaseFileExtension) && !name.startsWith(platformConfig.gtmFileNamePrefix);
   });
+
   if (!fileName) {
     utils.handleError("No file found", defer);
+  } else {
+    console.log('Found: ' + fileName);
   }
 
   var sourceFilePath = path.join(targetPath, fileName);

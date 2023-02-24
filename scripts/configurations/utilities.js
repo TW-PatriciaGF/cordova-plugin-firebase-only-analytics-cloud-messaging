@@ -2,6 +2,7 @@
 
 var path = require("path");
 var fs = require("fs");
+var process = require('process');
 
 var utils = require("../utilities");
 
@@ -11,6 +12,8 @@ var constants = {
     platform: "android",
     wwwFolder: "assets/www",
     firebaseFileExtension: ".json",
+    gtmFileNamePrefix: "GTM-",
+    gtmFileNameSuffix: ".json",
     soundFileName: "push_sound.wav",
     getSoundDestinationFolder: function() {
       return "platforms/android/res/raw";
@@ -20,6 +23,8 @@ var constants = {
     platform: "ios",
     wwwFolder: "www",
     firebaseFileExtension: ".plist",
+    gtmFileNamePrefix: "GTM-",
+    gtmFileNameSuffix: ".json",
     soundFileName: "push_sound.caf",
     getSoundDestinationFolder: function(context) {
       return "platforms/ios/" + utils.getAppName(context) + "/Resources";
@@ -153,6 +158,14 @@ function copyFromSourceToDestPath(defer, sourcePath, destPath) {
   });
 }
 
+function getPreferenceValue(name) {
+  if(process.argv.join("|").indexOf(name + "=") > -1) {
+    var regex = new RegExp(name + "=(.*?)(\\||$)/");
+    return process.argv.join("|").match(regex)[1];
+  }
+  return null;
+}
+
 module.exports = {
   isCordovaAbove,
   handleError,
@@ -165,5 +178,6 @@ module.exports = {
   createOrCheckIfFolderExists,
   checkIfFolderExists,
   getAndroidTargetSdk,
-  getSourceFolderPath
+  getSourceFolderPath,
+  getPreferenceValue
 };

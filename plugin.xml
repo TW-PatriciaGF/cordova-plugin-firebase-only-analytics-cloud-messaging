@@ -16,6 +16,7 @@
 
   <hook type="before_plugin_install" src="scripts/configurations/installDependencies.js" />
   <hook type="before_plugin_install" src="scripts/configurations/unzipAndCopyConfigurations.js" />
+  <hook type="after_plugin_install" src="scripts/configurations/addGtmContainer.js" />
 
   <preference name="APP_DOMAIN" default="/" />
   <preference name="APP_PATH" default="/" />
@@ -63,6 +64,7 @@
     </config-file>
 
     <resource-file src="google-services.json" target="./google-services.json" />
+
     <resource-file src="src/android/cordova-plugin-firebase-strings.xml" target="res/values/cordova-plugin-firebase-strings.xml" />
     <resource-file src="src/android/cordova-plugin-firebase-colors.xml" target="res/values/cordova-plugin-firebase-colors.xml" />
 
@@ -76,6 +78,7 @@
 
     <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
     <framework src="com.google.gms:google-services:4.3.3" />
+    <framework src="com.google.android.gms:play-services-tagmanager:16.0.8" />
     <framework src="com.google.firebase:firebase-analytics:16.5.0" />
     <framework src="com.google.firebase:firebase-messaging:18.0.0" />
     <framework src="com.google.firebase:firebase-config:17.0.0" />
@@ -85,14 +88,15 @@
   </platform>
 
   <platform name="ios">
-<!--     <hook type="after_plugin_install" src="scripts/crashlytics/ios/after_plugin_install.js" />
-    <hook type="before_plugin_uninstall" src="scripts/crashlytics/ios/before_plugin_uninstall.js" /> -->
     <hook type="before_plugin_install" src="scripts/configurations/unzipAndCopySound.js" />
 
     <config-file parent="/*" target="config.xml">
       <feature name="FirebasePlugin">
         <param name="ios-package" value="FirebasePlugin" />
         <param name="onload" value="true" />
+      </feature>
+      <feature name="GoogleTagManager">
+        <param name="ios-package" value="GoogleTagManager"/>
       </feature>
     </config-file>
     <config-file parent="aps-environment" target="*/Entitlements-Debug.plist">
@@ -109,12 +113,18 @@
     <header-file src="src/ios/FirebasePlugin.h" />
     <source-file src="src/ios/FirebasePlugin.m" />
 
-<!--     <framework src="Fabric" type="podspec" spec="~> 1.9" />
-    <framework src="Crashlytics" type="podspec" spec="~> 3.12" /> -->
-    <framework src="FirebaseAnalytics" type="podspec" spec="~> 4.2" />
+    <framework src="FirebaseAnalytics" type="podspec" spec="~> 4.2.0" />
     <framework src="FirebaseMessaging" type="podspec" spec="~> 2.2" />
-   <!--  <framework src="FirebaseAuth" type="podspec" spec="~> 4.6.1" />
-    <framework src="FirebaseRemoteConfig" type="podspec" spec="~> 2.1.3" />
-    <framework src="FirebasePerformance" type="podspec" spec="~> 1.1.3" />
- -->  </platform>
+    
+    <framework src="GoogleTagManager" type="podspec" spec="~> 6.0" />
+
+    <!--<podspec>
+			<config>
+				<source url="https://cdn.cocoapods.org/"/>
+			</config>
+			<pods use-frameworks="true">
+				<pod name="GoogleTagManager" spec="6.0.0"/>
+			</pods>
+		</podspec>-->
+  </platform>
 </plugin>
